@@ -1,0 +1,92 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+{{ persons.first_name }}
+{% endblock title %}
+
+
+{% block main %}
+{% if not user.is_authenticated %}
+ <h1>Зарегистрируйтесь</h1>
+ {% else %}
+
+<div class="card w-100 mb-1">
+  <div class="card-body">
+    <img style="width: 80px; height: 100px;" src="{{ persons.photo_card.url }}" class="img-thumbnail" alt="{{ person.photo_card }}">
+        <div class="container-lfuid p-2 ">
+          <div class="p-2">
+            <label>Регистрационный номер</label>
+            <input type="text" name="person.last_name" value="{{ persons.personal_number}}" readonly><br>
+            <label type="" class="">На службе с</label>
+            <input type="date", class="form-control w-25 p-1">
+          <div class="p-1">
+            <label class="px-4">Фамилия</label>
+            <input type="text" name="person.last_name" value="{{ persons.last_name }}" readonly>
+            <label>Имя</label>
+            <input type="text" name="person.first_name" value="{{ persons.first_name }}" readonly>
+            <label>Отчество</label>
+            <input type="text" name="person.patronymic" value="{{ persons.patronymic }}" readonly>
+          </div>  
+          <div class="p-1" >
+            <label>Дата рождения</label>
+            <input type="data"> 
+            <label>Пол</label>
+            <input type="text" name="person.sex" value="{{ persons.sex }}" readonly>
+            <label>Category</label>
+            <input type="text" name="category.title" value="{{ persons.category }}" readonly>
+
+          </div>
+          <div class="row p-2">
+            <label>Место рождения</label>
+            <input>
+          </div>
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <button class="btn btn-primary me-md-2" type="button">Button</button>
+                <!-- Кнопка-триггер модального окна -->
+          <button 
+          type="button" 
+          class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">MadalBtn										
+          </button>
+          <a href="{% url 'edit_person_url' persons.id %}" class="btn btn-denger">Редактировать</a>
+          <a href="{% url 'delete_person_url' persons.id %}" class="btn btn-denger">Удалить</a>
+        </div>
+    </div>
+    </div>
+                        
+<!-- Модальное окно -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header">
+   <h5 class="modal-title" id="exampleModalLabel">{{ product.title }}</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+</div>
+<div class="modal-body">
+<form method="post" action="">
+{% csrf_token %}
+<div class="mb-3">
+  <label for="user_name" class="form-label">You name</label>
+  <input type="text" class="form-control" name="user_name" id="user_name" required>
+</div>
+  <div class="mb-3">
+    <label for="user_email" class="form-label">Адрес электронной почты</label>
+    <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="emailHelp" required>
+    <div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
+  </div>
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+    <label class="form-check-label" for="exampleCheck1">Проверить меня</label>
+  </div>
+
+<!-- скрыть input type="hidden", отображать содержимое value="{#{{ ..._name }}#}", не изменять содержимое поля readonly-->
+  <input type="hidden" name="product_id" value="{{ product.id }}" readonly>
+  <button type="submit" class="btn btn-success">Отправить</button>
+   </form>
+</div>                        
+</div>
+</div>
+</div>
+{% endif %}
+{% endblock main %}
+

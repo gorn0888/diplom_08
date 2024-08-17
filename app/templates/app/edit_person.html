@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block main %}
+<a href="{% url 'person_detail_url' person.id %}">Вернуться на страницу выше<a/>
+<h1>Редактировать запись {{ person.last_name }} {{ person.first_name }}</h1>
+<form method="post" class="form-control" >
+    {% csrf_token %}
+    <input type="text" value="{{ person.last_name }}">
+    <input type="text" value="{{ person.first_name }}">
+    <select class="form-select" >
+      <option selected>Выберите категорию</option>
+      <option value="1">сотрудник</option>
+      <option value="2">гражданский персонал</option>
+      <option value="3">ФГГС</option>
+      <option value="4">военнослужащий</option>
+    </select>
+    <button class="btn btn-danger" type="submit">Изменить</button>
+</form>
+{% endblock main %}

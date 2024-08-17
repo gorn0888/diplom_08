@@ -1,0 +1,27 @@
+{% extends "index.html" %}
+{% load static %}
+
+
+{% block main %}
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">title</th>
+        <th scope="col">count</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Всего записей</th>
+        <td>{{ persons }}</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>{{ categories }}</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+      </tr>
+    </tbody>
+  </table>
+{% endblock main %}

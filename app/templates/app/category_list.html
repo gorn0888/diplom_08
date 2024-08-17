@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% load static %}
+
+ 
+{% block main %}
+<h1>{{ categories.title }}</h1>
+<ul>
+{% for person in persons %}
+    <li><p>{{ person.last_name }}</p></li>
+{% endfor %}
+</ul>
+{% endblock main %}
+

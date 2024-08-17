@@ -1,0 +1,150 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+Добавление сотрудника
+{% endblock title %}
+
+{% block header %}
+
+{% endblock header %}
+
+
+{% block main %}
+<form class="row g-2 p-2 needs-validation" method="post" action="/add_person" novalidate> <!-- novalidate отключает валидацию формы со стороны браузера -->
+  {% csrf_token %}
+  <div class="col-md-4">
+    <label for="validationCustom01" class="form-label">Фамилия</label>
+    <input type="text" class="form-control" name="last_name" id="validationCustom01" required> <!-- required поле обязательное для заполения -->
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="validationCustom02" class="form-label">Имя</label>
+    <input type="text" class="form-control" id="validationCustom02" name="first_name" required />
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="col-md-4">
+    <label for="validationCustom02" class="form-label">Отчество</label>
+    <input type="text" class="form-control" id="validationCustom02" name="patronymic" required>
+    <div class="valid-feedback">
+      Looks good!
+    </div>
+  </div>
+  <div class="col-md-4">
+    <select class="form-select" aria-label="сотрудник" name="select_category" required>
+      <option selected>Выберите категорию</option>
+      <option value="1">сотрудник</option>
+      <option value="2">гражданский персонал</option>
+      <option value="3">ФГГС</option>
+      <option value="4">военнослужащий</option>
+    </select>
+  </div>
+  <div class="col-md-4">
+    <select class="form-select" aria-label="Управление" name="select_division" required>
+      <option selected>Выберите подразделение</option>
+      <option value="1">Управление</option>
+      <option value="2">Обеспечение</option>
+      <option value="3">ОЛРР</option>
+      <option value="5">ЦентрЛРР</option>
+      <option value="6">СОБР "Омега"</option>
+      <option value="7">СОБР</option>
+      <option value="8">ОМОН "Утес"</option>
+      <option value="9">ОМОН "Смерч" (на транспорте)</option>
+      <option value="10">ОМОН "Орлан" г. Тольятти</option>
+    </select>
+  </div><br>
+ <!--
+  <div class="col-md-4">
+    <label for="validationCustomUsername" class="form-label">Username</label>
+    <div class="input-group has-validation">
+      <span class="input-group-text" id="inputGroupPrepend">@</span>
+      <input type="text" class="form-control" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+      <div class="invalid-feedback">
+        Please choose a username.
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <label for="validationCustom03" class="form-label">City</label>
+    <input type="text" class="form-control" id="validationCustom03" required>
+    <div class="invalid-feedback">
+      Please provide a valid city.
+    </div>
+  </div>
+  <div class="col-md-3">
+    <label for="validationCustom04" class="form-label">State</label>
+    <select class="form-select" id="validationCustom04" required>
+      <option selected disabled value="">Choose...</option>
+      <option>...</option>
+    </select>
+    <div class="invalid-feedback">
+      Please select a valid state.
+    </div>
+  </div>
+  <div class="col-md-3">
+    <label for="validationCustom05" class="form-label">Zip</label>
+    <input type="text" class="form-control" id="validationCustom05" required>
+    <div class="invalid-feedback">
+      Please provide a valid zip.
+    </div>
+  </div>
+  -->
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
+      <label class="form-check-label" for="invalidCheck">
+        Agree to terms and conditions
+      </label>
+      <div class="invalid-feedback">
+        You must agree before submitting.
+      </div>
+    </div>
+  </div> 
+  <div class="col-12">
+    <button class="btn btn-primary" type="submit">Submit form</button>
+    <!-- Кнопка-триггер модального окна -->
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      MadalBtn										
+    </button>
+  </div>
+</form>
+                        
+<!-- Модальное окно -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Добавление сотрудника</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="">
+                        {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="user_name" class="form-label">You name</label>
+                        <input type="text" class="form-control" name="user_name" id="user_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user_email" class="form-label">Адрес электронной почты</label>
+                        <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="emailHelp" required>
+                        <div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="form-check-label" for="exampleCheck1">Проверить меня</label>
+                    </div>
+                        <!-- скрыть input type="hidden", отображать содержимое value="",
+                        не изменять содержимое поля readonly-->
+                    {% comment %} <input type="hidden" name="product_id" value="{{ product.id }}" readonly>
+                                <button type="submit" class="btn btn-success">Отправить</button> {% endcomment %}
+                </form>
+        </div>                        
+    </div>
+</div>
+</div>
+
+{% endblock main %}

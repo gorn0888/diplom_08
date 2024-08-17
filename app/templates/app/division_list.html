@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}
+{{ divisions.title }}
+{% endblock title %}
+
+ 
+{% block main %}
+<h1>{{ divisions.title }}</h1>
+<ul>
+{% for person in persons %}
+    <li><p>{{ person.last_name }}</p></li>
+{% endfor %}
+</ul>
+{% endblock main %}

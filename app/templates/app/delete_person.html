@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% load static %}
+
+{% block header %}
+
+{% endblock header %}
+
+{% block main %}
+<h1>Удаление записи</h1>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Удалить запись: {{ person.last_name }} {{ person.first_name }}</button>
+</form>
+    
+{% endblock main %}
