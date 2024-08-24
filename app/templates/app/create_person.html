@@ -13,6 +13,11 @@
 {% block main %}
 <form class="row g-2 p-2 needs-validation" method="post" action="/add_person" novalidate> <!-- novalidate отключает валидацию формы со стороны браузера -->
   {% csrf_token %}
+  
+<div class="container">
+  {{ form }}
+</div>
+
   <div class="col-md-4">
     <label for="validationCustom01" class="form-label">Фамилия</label>
     <input type="text" class="form-control" name="last_name" id="validationCustom01" required> <!-- required поле обязательное для заполения -->
@@ -105,46 +110,9 @@
     </div>
   </div> 
   <div class="col-12">
-    <button class="btn btn-primary" type="submit">Submit form</button>
-    <!-- Кнопка-триггер модального окна -->
-    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      MadalBtn										
+    <button class="btn btn-primary" type="submit">
+      Submit form
     </button>
   </div>
 </form>
-                        
-<!-- Модальное окно -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавление сотрудника</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <div class="modal-body">
-                <form method="post" action="">
-                        {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="user_name" class="form-label">You name</label>
-                        <input type="text" class="form-control" name="user_name" id="user_name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="user_email" class="form-label">Адрес электронной почты</label>
-                        <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="emailHelp" required>
-                        <div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Проверить меня</label>
-                    </div>
-                        <!-- скрыть input type="hidden", отображать содержимое value="",
-                        не изменять содержимое поля readonly-->
-                    {% comment %} <input type="hidden" name="product_id" value="{{ product.id }}" readonly>
-                                <button type="submit" class="btn btn-success">Отправить</button> {% endcomment %}
-                </form>
-        </div>                        
-    </div>
-</div>
-</div>
-
 {% endblock main %}

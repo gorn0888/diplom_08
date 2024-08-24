@@ -49,6 +49,7 @@ class Person(models.Model):
     sex = models.CharField(max_length=8, default='мужской', choices=sex_choice, verbose_name='пол')
     category = models.ForeignKey(Category, on_delete=models.PROTECT, default=1, blank=True, related_name='person_category')
     division = models.ForeignKey(Division, on_delete=models.PROTECT, default=1, blank=True, related_name='person_division')
+    excluded = models.BooleanField(default=False, verbose_name='исключен')
 
     def __str__(self) -> str:
         return self.last_name
@@ -56,4 +57,16 @@ class Person(models.Model):
     def get_absolute_url(self):
         return reverse('person_detail_url', kwargs={'pk': self.pk})
  
+""" Архив """
+class Dismissed(models.Model):
+    last_name = models.CharField(max_length=16, verbose_name='фамилия')
+    first_name = models.CharField(max_length=24, verbose_name='имя')
+    patronymic = models.CharField(max_length=24, verbose_name='отчество', blank=True)
+    division = models.CharField(max_length=64, verbose_name='Подразделение')
+    dismissed_from = models.DateField(verbose_name='уволен с', blank=True, null=True)
+    order = models.CharField(max_length=64, blank=True, null=True, verbose_name='чей приказ')
+    number = models.CharField(max_length=16, blank=True, null=True, verbose_name='номер приказа')
+    an_order_from = models.DateField(verbose_name='приказ от', blank=True, null=True)
 
+    def get_absolute_url(self):
+        return reverse('dismissed_person_url', kwargs={'pk': self.pk})

@@ -5,10 +5,13 @@
 {{ persons.first_name }}
 {% endblock title %}
 
+{% block header %}
+
+{% endblock header %}
 
 {% block main %}
 {% if not user.is_authenticated %}
- <h1>Зарегистрируйтесь</h1>
+ <h1>Вход не выполнен</h1>
  {% else %}
 
 <div class="card w-100 mb-1">
@@ -22,15 +25,15 @@
             <input type="date", class="form-control w-25 p-1">
           <div class="p-1">
             <label class="px-4">Фамилия</label>
-            <input type="text" name="person.last_name" value="{{ persons.last_name }}" readonly>
+            <input type="text" name="last_name" value="{{ persons.last_name }}" readonly>
             <label>Имя</label>
-            <input type="text" name="person.first_name" value="{{ persons.first_name }}" readonly>
+            <input type="text" name="first_name" value="{{ persons.first_name }}" readonly>
             <label>Отчество</label>
-            <input type="text" name="person.patronymic" value="{{ persons.patronymic }}" readonly>
+            <input type="text" name="patronymic" value="{{ persons.patronymic }}" readonly>
           </div>  
           <div class="p-1" >
             <label>Дата рождения</label>
-            <input type="data"> 
+            <input type="date" class="form-control w-25 p-1"><br> 
             <label>Пол</label>
             <input type="text" name="person.sex" value="{{ persons.sex }}" readonly>
             <label>Category</label>
@@ -41,52 +44,84 @@
             <label>Место рождения</label>
             <input>
           </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btn-primary me-md-2" type="button">Button</button>
-                <!-- Кнопка-триггер модального окна -->
-          <button 
-          type="button" 
-          class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">MadalBtn										
+          <a href="{% url 'edit_person_url' persons.id %}" class="btn btn-info">Редактировать</a>
+          <!-- Кнопка-триггер модального окна -->
+          <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Уволить
           </button>
-          <a href="{% url 'edit_person_url' persons.id %}" class="btn btn-denger">Редактировать</a>
-          <a href="{% url 'delete_person_url' persons.id %}" class="btn btn-denger">Удалить</a>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+          <a href="{% url 'person_list_url' %}" class="btn btn-primary me-md-2">На главную</a>
+          <a href="{% url 'delete_person_url' persons.id %}" class="btn btn-danger">
+            Удалить запись
+          </a>
+           <!-- Модальное окно -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{persons.last_name}} {{persons.first_name}} ({{ persons.division.title }})</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+              </div>
+              <div class="modal-body">
+              <form method="post" action="/app/dismissed_person/" novalidate>
+              {% csrf_token %}
+              <div class="mb-3 ">
+                <label class="px-4">Фамилия</label>
+                <input type="text" name="last_name" value="{{ persons.last_name }}" readonly><br>
+                <label>Имя</label>
+                <input type="text" name="first_name" value="{{ persons.first_name }}" readonly><br>
+                <label>Отчество</label>
+                <input type="text" name="patronymic" value="{{ persons.patronymic }}" readonly><br>
+                
+                <label for="division" class="form-label">division</label>
+                <input type="text" value="{{ persons.division }}" class="form-control" name="division" id="division" readonly><br> 
+
+                <label for="dismissed_from" class="form-label">dismissed_from</label>
+                <input type="date" class="form-control" name="dismissed_from" id="dismissed_from" required><br> 
+                <label for="order" class="form-label">order</label>
+                <select class="form-select" aria-label="Управление" name="order" required>
+                  <option selected>Выберите подразделение</option>
+                  <option value="1">Управление</option>
+                  <option value="2">Обеспечение</option>
+                  <option value="3">ОЛРР</option>
+                  <option value="5">ЦентрЛРР</option>
+                  <option value="6">СОБР "Омега"</option>
+                  <option value="7">СОБР</option>
+                  <option value="8">ОМОН "Утес"</option>
+                  <option value="9">ОМОН "Смерч" (на транспорте)</option>
+                  <option value="10">ОМОН "Орлан" г. Тольятти</option>
+                </select>
+                
+                
+                
+                <label for="number_order" class="form-label">Numder_order</label>
+                <input type="text" class="form-control" name="number_order" id="number_order" required>
+                <label for="order_from" class="form-label">order_from</label>
+                <input type="date" class="form-control" name="order_from" id="order_from" required> 
+                
+                <!-- <input checked="checked" type="checkbox" name="excluded" value="True" id="id_status" /> -->
+
+              </div>
+                <!-- <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">Проверить меня</label>
+                </div> -->
+
+              <!-- скрыть input type="hidden", отображать содержимое value="{#{{ ..._name }}#}", не изменять содержимое поля readonly-->
+                <label for="excluded" class="form-label">Excluded</label>
+                <input type="text" class="form-control" name="excluded" value="True" id="excluded" required>
+
+                <input type="text" name="person_id" value="{{ persons.id }}" readonly>
+                <button type="submit" class="btn btn-success">Отправить</button>
+                </form>
+              </div>                        
+              </div>
+              </div>
+              </div>
         </div>
     </div>
     </div>
-                        
-<!-- Модальное окно -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
- <div class="modal-dialog">
-  <div class="modal-content">
-   <div class="modal-header">
-   <h5 class="modal-title" id="exampleModalLabel">{{ product.title }}</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-</div>
-<div class="modal-body">
-<form method="post" action="">
-{% csrf_token %}
-<div class="mb-3">
-  <label for="user_name" class="form-label">You name</label>
-  <input type="text" class="form-control" name="user_name" id="user_name" required>
-</div>
-  <div class="mb-3">
-    <label for="user_email" class="form-label">Адрес электронной почты</label>
-    <input type="email" class="form-control" name="user_email" id="user_email" aria-describedby="emailHelp" required>
-    <div id="emailHelp" class="form-text">Мы никогда никому не передадим вашу электронную почту.</div>
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Проверить меня</label>
-  </div>
-
-<!-- скрыть input type="hidden", отображать содержимое value="{#{{ ..._name }}#}", не изменять содержимое поля readonly-->
-  <input type="hidden" name="product_id" value="{{ product.id }}" readonly>
-  <button type="submit" class="btn btn-success">Отправить</button>
-   </form>
-</div>                        
-</div>
-</div>
-</div>
+    
 {% endif %}
 {% endblock main %}
 

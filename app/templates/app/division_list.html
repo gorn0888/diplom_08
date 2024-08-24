@@ -10,7 +10,7 @@
 <h1>{{ divisions.title }}</h1>
 <ul>
 {% for person in persons %}
-    <li><p>{{ person.last_name }}</p></li>
+    <a href="{% url 'person_detail_url' person.id %}"><li><p>{{ person.last_name }}</p></li></a>
 {% endfor %}
 </ul>
 {% endblock main %}

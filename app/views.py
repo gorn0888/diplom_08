@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from app.models import Person, Category, Division
+from app.models import Person, Category, Division, Dismissed
 from django.db.models import Q
 from app.forms import PersonForm
 from django.views.generic import DeleteView, UpdateView
@@ -102,6 +102,22 @@ def division_list(request, pk):
 ''' добавление сотрудника '''
 ###########################################################################
 def create_person(request):
+    persons = Person.objects.all()
+    division = Division.objects.all()
+    category = Category.objects.all()
+    # form = PersonForm
+    return render(
+        request,
+        'app/create_person.html',
+        context={
+            'persons': persons,
+            'division': division,
+            'category': category,
+            # 'form': form,
+        }
+    )
+
+def add_person(request):
     # error = ''
     # if request.method == 'POST':
     #     form = PersonForm(request.POST)
@@ -115,20 +131,7 @@ def create_person(request):
     #         'error': error,
     #     }
     #     return render(request, 'app/person_list.html', data)
-    persons = Person.objects.all()
-    division = Division.objects.all()
-    category = Category.objects.all()
-    return render(
-        request,
-        'app/create_person.html',
-        context={
-            'persons': persons,
-            'division': division,
-            'category': category,
-        }
-    )
 
-def add_person(request):
     persons = Person.objects.all()
     division = Division.objects.all()
     category = Category.objects.all()
@@ -150,19 +153,50 @@ def add_person(request):
     )
 
 ###########################################################################
+""" Увольнение """
+###########################################################################
+def dismissed_person(request):
+    persons = Person.objects.all()
+    division = Division.objects.all()
+    person_dismissed = Dismissed()
+    person_dismissed.last_name = request.POST['last_name']
+    person_dismissed.first_name = request.POST['first_name']
+    person_dismissed.patronymic = request.POST['patronymic']
+    person_dismissed.division = request.POST['division']
+    person_dismissed.dismissed_from = request.POST['dismissed_from']
+    person_dismissed.order = Division.objects.get(pk=request.POST['order'])
+    person_dismissed.number_order = request.POST['number_order']
+    person_dismissed.order_from = request.POST['order_from']
+    person_dismissed.save()
+    if request.method == "POST":
+        persons_excluded = Person()    
+        persons_excluded.excluded = Person.objects.get(excluded=request.POST['excluded'])
+        persons_excluded.save()
+    return render(
+        request,
+        'app/dismissed_person.html',
+        context = {
+            'persons': persons,
+            'division': division,
+        }
+    )
+    
+    
+
+###########################################################################
 """ Отчет """
 ###########################################################################
 def report(request):
     persons = Person.objects.count()
-    
     division = Division.objects.all()
+    form = PersonForm
     return render(
         request,
         'app/report.html',
         context = {
             'persons': persons,
-            'person': person,
             'division': division,
+            'form': form,
         }
     )
 

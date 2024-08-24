@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block main %}
-
       {% if user.is_authenticated %}
 <div>
   <a href="{% url 'create_person_url' %}" class="m-2 btn btn-primary">Добавить сотрудника</a>
@@ -11,11 +10,11 @@
       <table class="table table-borderless table-striped">
         {% for person in persons %}
         <thead>
-          <tr> 
+          <!-- <tr> 
             <th style="width: 1rem;" scope="col">{{ person.personal_number }}</th>
             <th style="width: 100px" scope="col">Images</th>
             <th scope="col">{{person.last_name}} {{person.first_name}} {{person.patronymic}}</th>
-          </tr>
+          </tr> -->
         </thead>
         <tbody class="table-group-divider">
           <tr>
@@ -37,12 +36,78 @@
                     </li>
                   </ul>
                   <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                  <button type="button" class="btn">Base class</button>
-                  <a href="#" class="btn btn-primary">#</a>
+                  <!-- <button type="button" class="btn btn-secondary">Base class</button>
+                  <a href="#" class="btn btn-primary">#</a> -->
+                  <a href="{% url 'edit_person_url' person.id %}" class="btn btn-info">Редактировать</a>
+                  <a href="{% url 'delete_person_url' person.id %}" class="btn btn-danger justify-content-md-end">
+                    Удалить запись
+                  </a>
+        <!-- Кнопка-триггер модального окна -->
+                  <button 
+                  type="button" 
+                  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">MadalBtn										
+                  </button>
                 </div>
               </div>
+              <!-- Модальное окно -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                  <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">{{persons.last_name}} {{persons.first_name}} ({{ persons.division.title }})</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                <form method="post" action="/app/dismissed_person/" novalidate>
+                {% csrf_token %}
+                <div class="mb-3 ">
+                  <label class="px-4">Фамилия</label>
+                  <input type="text" name="last_name" value="{{ persons.last_name }}" readonly><br>
+                  <label>Имя</label>
+                  <input type="text" name="first_name" value="{{ persons.first_name }}" readonly><br>
+                  <label>Отчество</label>
+                  <input type="text" name="patronymic" value="{{ persons.patronymic }}" readonly><br>
+                  
+                  <label for="division" class="form-label">division</label>
+                  <input type="text" value="{{ persons.division }}" class="form-control" name="division" id="division" readonly><br> 
+  
+                  <label for="dismissed_from" class="form-label">dismissed_from</label>
+                  <input type="date" class="form-control" name="dismissed_from" id="dismissed_from" required><br> 
+                  <label for="order" class="form-label">order</label>
+                  <select class="form-select" aria-label="Управление" name="order" required>
+                    <option selected>Выберите подразделение</option>
+                    <option value="1">Управление</option>
+                    <option value="2">Обеспечение</option>
+                    <option value="3">ОЛРР</option>
+                    <option value="5">ЦентрЛРР</option>
+                    <option value="6">СОБР "Омега"</option>
+                    <option value="7">СОБР</option>
+                    <option value="8">ОМОН "Утес"</option>
+                    <option value="9">ОМОН "Смерч" (на транспорте)</option>
+                    <option value="10">ОМОН "Орлан" г. Тольятти</option>
+                  </select>
+                  
+                  
+                  <label for="number_order" class="form-label">Numder_order</label>
+                  <input type="text" class="form-control" name="number_order" id="number_order" required>
+                  <label for="order_from" class="form-label">order_from</label>
+                  <input type="date" class="form-control" name="order_from" id="order_from" required> 
+                </div>
+                  <!-- <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Проверить меня</label>
+                  </div> -->
+  
+                <!-- скрыть input type="hidden", отображать содержимое value="{#{{ ..._name }}#}", не изменять содержимое поля readonly-->
+                  <input type="text" name="person_id" value="{{ persons.id }}" readonly>
+                  <button type="submit" class="btn btn-success">Отправить</button>
+                  </form>
+                </div>                        
+                </div>
+                </div>
+                </div>
+            <td>{{ person.excluded }}</td>
           {% endfor %}
-            <td>#</td>
             <td>##</td>
             <td>#@#</td>
           </tr>
